@@ -2,6 +2,7 @@ package com.nhanbt.demo_kotlin_native.features.note.data.data_source
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QueryDocumentSnapshot
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.toObject
 import com.nhanbt.demo_kotlin_native.core.response.BaseResponse
 import com.nhanbt.demo_kotlin_native.features.note.domain.model.Note
@@ -60,10 +61,9 @@ class NotesRepositoryImp @Inject constructor(
 
     override suspend fun getNoteById(noteId: String): NoteResponse {
         return try {
-            var note = Note()
-            noteReference.document(noteId).get().addOnSuccessListener { task ->
-                note = task.toObject<Note>() !!
-            }.await()
+            val res = noteReference.document(noteId).get().await()
+            var note = res.toObject<Note>() !!
+            note.id = noteId
             BaseResponse.Success(note)
         } catch (e: Exception) {
             BaseResponse.Failure(e)
@@ -72,7 +72,7 @@ class NotesRepositoryImp @Inject constructor(
 
     override suspend fun updateNoteById(note: Note): UpdateNoteResponse {
         return try {
-            noteReference.document(note.id).set(note.toMap()).await()
+            noteReference.document(note.id).set(note.toMap(), SetOptions.merge()).await()
             BaseResponse.Success(true)
         } catch (e: Exception) {
             BaseResponse.Failure(e)

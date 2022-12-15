@@ -5,7 +5,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavController
 import com.nhanbt.demo_kotlin_native.config.AppRoute
 import com.nhanbt.demo_kotlin_native.core.components.TopBar
@@ -18,7 +17,6 @@ fun NotesScreen(
     navController: NavController,
 ) {
     val scaffoldState = rememberScaffoldState()
-    val scope = rememberCoroutineScope()
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -28,7 +26,11 @@ fun NotesScreen(
         content = { padding ->
             NotesWrapper(
                 content = { notes ->
-                    NotesContent(padding = padding, notes = notes)
+                    NotesContent(
+                        padding = padding,
+                        notes = notes,
+                        navController = navController,
+                    )
                 }
             )
         },

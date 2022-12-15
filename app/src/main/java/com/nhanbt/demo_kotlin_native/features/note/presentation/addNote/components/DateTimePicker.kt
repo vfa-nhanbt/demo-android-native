@@ -20,13 +20,14 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun DateTimePicker(
-    dateTimePickerSubmit: (LocalDateTime) -> Unit
+    dateTimePickerSubmit: (LocalDateTime) -> Unit,
+    initDateTime: LocalDateTime? = null,
 ) {
     var pickedDate by remember {
-        mutableStateOf(LocalDate.now().plusDays(1))
+        mutableStateOf(initDateTime?.toLocalDate() ?: LocalDate.now().plusDays(1))
     }
     var pickedTime by remember {
-        mutableStateOf(LocalTime.MIDNIGHT)
+        mutableStateOf(initDateTime?.toLocalTime() ?: LocalTime.MIDNIGHT)
     }
     val formattedDate by remember {
         derivedStateOf {

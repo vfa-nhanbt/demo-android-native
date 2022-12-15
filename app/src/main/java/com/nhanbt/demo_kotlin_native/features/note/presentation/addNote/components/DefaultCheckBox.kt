@@ -15,10 +15,11 @@ import androidx.compose.ui.Modifier
 @Composable
 fun DefaultCheckBox(
     title: String,
+    isChecked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val checkedState = remember { mutableStateOf(false) }
+    val checkedState = remember { mutableStateOf(isChecked) }
 
     Row(
         modifier = modifier,

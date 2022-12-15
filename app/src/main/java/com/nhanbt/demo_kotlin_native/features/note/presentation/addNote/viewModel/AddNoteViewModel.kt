@@ -1,13 +1,17 @@
 package com.nhanbt.demo_kotlin_native.features.note.presentation.addNote.viewModel
 
+import android.util.Log
 import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Timestamp
 import com.nhanbt.demo_kotlin_native.core.response.BaseResponse
 import com.nhanbt.demo_kotlin_native.features.note.domain.model.Note
+import com.nhanbt.demo_kotlin_native.features.note.domain.repositories.NoteResponse
 import com.nhanbt.demo_kotlin_native.features.note.domain.usecases.NoteUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -25,6 +29,9 @@ class AddNoteViewModel @Inject constructor(
 ) : ViewModel() {
     private var currentNoteId: String? = null
 
+    var noteResponse by mutableStateOf<NoteResponse>(BaseResponse.Success(Note()))
+        private set
+
     private val _noteTitle = mutableStateOf(
         NoteTextFieldState(
             hint = "Enter title..."
@@ -39,7 +46,7 @@ class AddNoteViewModel @Inject constructor(
     )
     val noteDescription: State<NoteTextFieldState> = _noteDescription
 
-    private val _noteCategories = mutableListOf<String>()
+    private var _noteCategories = mutableListOf<String>()
 
     private var _deadline = LocalDateTime.now().plusDays(1)
 
@@ -48,12 +55,27 @@ class AddNoteViewModel @Inject constructor(
 
     init {
         savedStateHandle.get<String>("noteId")?.let { noteId ->
-            if (noteId.compareTo(noteId) != 0) {
+            if (noteId.compareTo("N/A") != 0) {
                 viewModelScope.launch {
-                    useCases.getNoteById(noteId).also { note ->
-                        when (note) {
-                            is BaseResponse.Success -> currentNoteId = note.data.id
-                            is BaseResponse.Failure -> currentNoteId = note.e.toString()
+                    noteResponse = BaseResponse.Loading
+//                    noteResponse = useCases.getNoteById(noteId)
+                    useCases.getNoteById(noteId).also {
+                        noteResponse = it
+                        if (it is BaseResponse.Success) {
+                            // Init value if navigate from specific note item
+                            currentNoteId = it.data.id
+                            _noteTitle.value = noteTitle.value.copy(
+                                text = it.data.title,
+                                isHintVisible = false
+                            )
+                            _noteDescription.value = noteDescription.value.copy(
+                                text = it.data.description,
+                                isHintVisible = false
+                            )
+                            _deadline = it.data.deadline.toDate().toInstant()
+                                .atZone(ZoneId.systemDefault())
+                                .toLocalDateTime()
+                            _noteCategories = it.data.categories.toMutableList()
                         }
                     }
                 }
@@ -108,7 +130,13 @@ class AddNoteViewModel @Inject constructor(
                                 )
                             ),
                         )
-                        useCases.addNote(note)
+                        Log.d("FROM_ADD_NOTE_VIEW_MODEL", "Current note value: $note")
+                        if (currentNoteId != null) {
+                            note.id = currentNoteId !!
+                            useCases.updateNoteById(note)
+                        } else {
+                            useCases.addNote(note)
+                        }
                         _eventFlow.emit(UiEvent.SaveNote)
                     } catch (e: Exception) {
                         _eventFlow.emit(
