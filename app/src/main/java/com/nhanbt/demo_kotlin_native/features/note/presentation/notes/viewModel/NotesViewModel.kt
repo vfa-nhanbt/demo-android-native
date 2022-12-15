@@ -8,13 +8,15 @@ import androidx.lifecycle.viewModelScope
 import com.nhanbt.demo_kotlin_native.core.response.BaseResponse
 import com.nhanbt.demo_kotlin_native.features.note.domain.repositories.NotesResponse
 import com.nhanbt.demo_kotlin_native.features.note.domain.usecases.NoteUseCases
+import com.nhanbt.demo_kotlin_native.features.weather.domain.usecases.WeatherUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class NotesViewModel @Inject constructor(
-    private val useCases: NoteUseCases
+    private val useCases: NoteUseCases,
+    private val weatherUseCases: WeatherUseCases
 ) : ViewModel() {
     var notesResponse by mutableStateOf<NotesResponse>(BaseResponse.Loading)
         private set

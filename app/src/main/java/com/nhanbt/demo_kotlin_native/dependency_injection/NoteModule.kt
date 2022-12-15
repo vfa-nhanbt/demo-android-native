@@ -1,7 +1,7 @@
 package com.nhanbt.demo_kotlin_native.dependency_injection
 
 import com.google.firebase.firestore.FirebaseFirestore
-import com.nhanbt.demo_kotlin_native.features.note.data.data_source.NotesRepositoryImp
+import com.nhanbt.demo_kotlin_native.features.note.data.repositories.NotesRepositoryImp
 import com.nhanbt.demo_kotlin_native.features.note.domain.repositories.NotesRepository
 import com.nhanbt.demo_kotlin_native.features.note.domain.usecases.*
 import dagger.Module
@@ -11,7 +11,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-object NoteDependencyInjection {
+object NoteModule {
     @Provides
     fun provideNotesRepository(
         db: FirebaseFirestore

@@ -1,11 +1,11 @@
-package com.nhanbt.demo_kotlin_native.features.note.data.data_source
+package com.nhanbt.demo_kotlin_native.features.note.data.repositories
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.toObject
 import com.nhanbt.demo_kotlin_native.core.response.BaseResponse
-import com.nhanbt.demo_kotlin_native.features.note.domain.model.Note
+import com.nhanbt.demo_kotlin_native.features.note.domain.entities.Note
 import com.nhanbt.demo_kotlin_native.features.note.domain.repositories.*
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow

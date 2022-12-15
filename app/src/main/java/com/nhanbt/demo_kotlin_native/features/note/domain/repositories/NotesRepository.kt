@@ -1,7 +1,7 @@
 package com.nhanbt.demo_kotlin_native.features.note.domain.repositories
 
 import com.nhanbt.demo_kotlin_native.core.response.BaseResponse
-import com.nhanbt.demo_kotlin_native.features.note.domain.model.Note
+import com.nhanbt.demo_kotlin_native.features.note.domain.entities.Note
 import kotlinx.coroutines.flow.Flow
 
 typealias Notes = List<Note>

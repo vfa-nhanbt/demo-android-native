@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Timestamp
 import com.nhanbt.demo_kotlin_native.core.response.BaseResponse
-import com.nhanbt.demo_kotlin_native.features.note.domain.model.Note
+import com.nhanbt.demo_kotlin_native.features.note.domain.entities.Note
 import com.nhanbt.demo_kotlin_native.features.note.domain.repositories.NoteResponse
 import com.nhanbt.demo_kotlin_native.features.note.domain.usecases.NoteUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel

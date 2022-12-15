@@ -1,4 +1,4 @@
-package com.nhanbt.demo_kotlin_native.features.note.domain.model
+package com.nhanbt.demo_kotlin_native.features.note.domain.entities
 
 import com.google.firebase.Timestamp
 import java.text.SimpleDateFormat

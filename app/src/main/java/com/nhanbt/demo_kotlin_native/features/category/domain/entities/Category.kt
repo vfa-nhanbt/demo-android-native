@@ -1,4 +1,4 @@
-package com.nhanbt.demo_kotlin_native.features.category.domain.model
+package com.nhanbt.demo_kotlin_native.features.category.domain.entities
 
 data class Category(
     var id: String,
