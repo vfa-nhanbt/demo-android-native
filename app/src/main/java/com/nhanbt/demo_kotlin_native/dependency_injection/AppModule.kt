@@ -2,6 +2,7 @@ package com.nhanbt.demo_kotlin_native.dependency_injection
 
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.nhanbt.demo_kotlin_native.features.weather.data.datasources.WeatherApi
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -19,6 +20,10 @@ object AppModule {
     @Provides
     @Singleton
     fun provideFirebaseFirestore() = Firebase.firestore
+
+    @Provides
+    @Singleton
+    fun provideStorageReference() = Firebase.storage.reference.child("images/avatar/user_avatar")
 
     @Provides
     @Singleton
